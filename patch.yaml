@@ -1,0 +1,13 @@
+- name: OS Patching
+  hosts: all
+  tasks:
+    - name: Install repo
+      yum:
+        name: epel-release
+        state: latest
+        update_cache: yes
+    - name: Update system
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
