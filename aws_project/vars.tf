@@ -30,3 +30,12 @@ variable "sub_az_2" {
   type    = string
   default = "us-east-1a"
 }
+#---------ec2
+variable "instance-type" {
+  type    = string
+  default = "t2.micro"
+}
+variable "ssh-key" {
+  default     = "key-for-server"
+  description = "key for ssh into ec2 instance"
+}
