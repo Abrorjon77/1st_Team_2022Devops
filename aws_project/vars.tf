@@ -1,10 +1,10 @@
 variable "default_region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 ##---- vpc vars -----
 variable "vpc_cird" {
-  type = string
+  type    = string
   default = "124.10.0.0/16"
 }
 
