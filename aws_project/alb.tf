@@ -100,7 +100,7 @@ resource "aws_lb_listener_rule" "lb-listener_rule_images" {
 
   condition {
     path_pattern {
-      values = ["/images/"]
+      values = ["/images/*"]
     }
   }
 }
@@ -116,7 +116,7 @@ resource "aws_lb_listener_rule" "lb-listener_rule_videos" {
 
   condition {
     path_pattern {
-      values = ["/videos/"]
+      values = ["/videos/*"]
     }
   }
 }
