@@ -1,0 +1,107 @@
+---
+- name: Install and start Apache HTTPD
+  hosts: db_servers
+  become: yes
+
+  tasks:
+    - name: httpd package is present
+      yum:
+        name: httpd
+        state: present
+
+    - name: httpd is started
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Enable firewalld
+      service: name=firewalld state=started enabled=yes
+
+    - name: Allow http/https
+      command: firewall-cmd --add-service=http --add-service=https --permanent
+
+    - name: reload firewalld
+      command: firewall-cmd --reload
+- name: Insatll mariadb
+  hosts: db_servers
+  become: yes
+
+  tasks:
+    - name: let's add MariaDB yum repository
+      copy:
+        src: /home/abrorjon/mariadb/source.txt
+        dest: /etc/yum.repos.d/MariaDB.repo
+
+    - name: We need epel release
+      yum:
+        name: epel-release
+
+    - name: Let's install Server and Client packages
+      yum:
+        name:
+          - MariaDB-server
+          - MariaDB-client
+
+    - name: Start a service with systemd
+      systemd:
+        name: mariadb
+        state: started
+    - name: Enable nginx service
+      systemd:
+        name:  mariadb
+        enabled: true
+        masked: no
+        
+   - name: lets check result
+      command:
+        cmd: rpm -q MariaDB-server
+ 
+ - name: Install and start php
+  hosts: db_servers
+  become: yes
+  tasks:
+    - name: We need epel release to install phpmyadmin
+      yum:
+        name: epel-release
+
+    - name: phpmyadmin package is present
+      yum:
+        name: php
+        state: present
+
+    - name: Creating a file with content
+      copy:
+        dest: "/var/www/html/test.php"
+        content: |
+          <?php
+          // Show all information, defaults to INFO_ALL
+          phpinfo();
+          ?>
+
+    - name: restart service
+      service:
+            name: "httpd"
+            state: restarted
+            enabled: yes
+            register: restart
+           
+- name: Install and start phpmyadmin
+  hosts: db_servers
+  become: yes
+  tasks:
+    - name: We need epel release to install phpmyadmin
+      yum:
+        name: epel-release
+
+    - name: phpmyadmin package is present
+      yum:
+        name: phpmyadmin
+        state: present
+
+    - name: restart service
+      service:
+            name: "httpd"
+            state: restarted
+            enabled: yes
+            register: restart
