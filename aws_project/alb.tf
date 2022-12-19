@@ -83,7 +83,7 @@ resource "aws_lb_listener" "tf_lb_listener" {
 
     fixed_response {
       content_type = "text/html"
-      message_body = "<h1 align='center'>You're in staging area, go to videos or images</h1>"
+      message_body = "<h1 align='center'>You're in staging area, go to <a href='/videos/'>videos</a> or <a href='/images/'>images</a></h1>"
       status_code  = "200"
 
     }
