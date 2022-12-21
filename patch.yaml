@@ -15,7 +15,7 @@
       yum:
         name: ["bind-utils", "man", "man-pages", "mlocate", "sysstat"]
         state: latest
-    - name: edit sshd_config
+    - name: edit disable root ssh login
       lineinfile:
         path: /etc/ssh/sshd_config
         regex: '^\#PermitRootLogin yes'
