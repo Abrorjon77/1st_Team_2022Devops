@@ -15,3 +15,13 @@
       yum:
         name: ["bind-utils", "man", "man-pages", "mlocate", "sysstat"]
         state: latest
+    - name: edit sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: '^\#PermitRootLogin yes'
+        state: present
+        line: 'PermitRootLogin no'
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
